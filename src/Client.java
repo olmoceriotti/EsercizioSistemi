@@ -1,3 +1,5 @@
+import jdk.jshell.execution.Util;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,8 +43,28 @@ public class Client {
                 String name = input.nextLine();
                 System.out.println("The id of the added author is: " +  addAuthor(name));
             }
+            case 4 -> {
+                System.out.println("Inserire nome autore:");
+                String name = input.nextLine();
+                System.out.println("Inserire libro da aggiungere:");
+                String book = input.nextLine();
+                if (addBook(name, book)) {
+                    System.out.println("Successo");
+                } else {
+                    System.out.println("Fallimento");
+                }
+            }
+            case 5 -> {
+                Utility.printArray(getAllBooks());
+            }
+            case 6 -> {
+                System.out.println("Inserire nome autore:");
+                String name = input.nextLine();
+                Utility.printArray(getBooksOf(name));
+            }
             case 7 ->{
                 System.out.println("Closing the connection...");
+                out.println("Close\nend.");
                 exit = true;
             }
         }
@@ -83,6 +105,41 @@ public class Client {
             authId = Integer.parseInt(readLine);
         }
         return authId;
+    }
+
+    private boolean addBook(String name,  String book) throws IOException {
+        out.println("addBook\nend.");
+        String readLine;
+        boolean successo = false;
+        out.println(name+"\nend.\n"+book+"\nend.");
+        while((readLine = in.readLine()) !=  null){
+            if(readLine.equalsIgnoreCase("end.")) break;
+            if(readLine.equalsIgnoreCase("success")) successo = true;
+        }
+        return successo;
+    }
+
+    private ArrayList<String> getAllBooks() throws IOException{
+        out.println("getAllBooks\nend.");
+        String readLine;
+        ArrayList<String> libri = new ArrayList<String>();
+        while((readLine = in.readLine()) != null){
+            if(readLine.equalsIgnoreCase("end.")) break;
+            libri.add(readLine);
+        }
+        return libri;
+    }
+
+    private ArrayList<String> getBooksOf(String name) throws IOException{
+        out.println("getBooksOf\nend.");
+        String readLine;
+        ArrayList<String> libri = new ArrayList<String>();
+        out.println(name+ "\nend.");
+        while((readLine = in.readLine()) != null){
+            if(readLine.equalsIgnoreCase("end.")) break;
+            libri.add(readLine);
+        }
+        return libri;
     }
 
     public void close() throws IOException {
